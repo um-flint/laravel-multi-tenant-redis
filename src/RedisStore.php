@@ -1,6 +1,6 @@
 <?php
 
-namespace UMFlint\Cache\RedisStore;
+namespace UMFlint\Cache;
 
 use Illuminate\Cache\RedisStore as RedisStoreBase;
 
@@ -11,7 +11,7 @@ class RedisStore extends RedisStoreBase
      *
      * @var string
      */
-    protected $setName = 'key.store';
+    protected $setName = 'key:store';
 
     /**
      * Add a cache key to the set.
@@ -46,9 +46,9 @@ class RedisStore extends RedisStoreBase
      */
     public function put($key, $value, $minutes)
     {
-        parent::put($key, $value, $minutes);
-
         $this->addKey($key);
+
+        parent::put($key, $value, $minutes);
     }
 
     /**
@@ -76,9 +76,9 @@ class RedisStore extends RedisStoreBase
      */
     public function forever($key, $value)
     {
-        parent::forever($key, $value);
-
         $this->addKey($key);
+
+        parent::forever($key, $value);
     }
 
     /**
