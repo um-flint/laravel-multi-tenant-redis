@@ -9,7 +9,7 @@ Before installing it would be a good idea to clear the application cache.
 ### Installation
 Add to your composer.json file
 ```json
-"um-flint/laravel-multi-tenant-redis": "1.0.*"
+"um-flint/laravel-multi-tenant-redis": "0.0.*"
 ```
 
 ### Register the package
