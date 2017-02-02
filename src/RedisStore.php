@@ -21,10 +21,7 @@ class RedisStore extends RedisStoreBase
      */
     protected function addKey($key)
     {
-        $this->connection()->command('SADD', [
-            $this->prefix . $this->setName,
-            $this->prefix . $key,
-        ]);
+        $this->connection()->sadd($this->prefix . $this->setName, [$this->prefix . $key]);
     }
 
     /**
@@ -35,10 +32,7 @@ class RedisStore extends RedisStoreBase
      */
     protected function removeKey($key)
     {
-        $this->connection()->command('SREM', [
-            $this->prefix . $this->setName,
-            $this->prefix . $key,
-        ]);
+        $this->connection()->srem($this->prefix . $this->setName, [$this->prefix . $key]);
     }
 
     /**
@@ -90,21 +84,17 @@ class RedisStore extends RedisStoreBase
 
         return parent::forget($key);
     }
-
+    
     /**
      * @inheritdoc
      */
     public function flush()
     {
         // Get the keys from the set.
-        $keys = $this->connection()->command('SMEMBERS', [
-            $this->prefix . $this->setName,
-        ]);
+        $keys = $this->connection()->smembers($this->prefix . $this->setName);
+        $keys[] = $this->prefix . $this->setName;
 
         // Delete all the keys.
-        $this->connection()->command('DEL', $keys);
-
-        // Clear the set.
-        $this->connection()->command('DEL', $this->prefix . $this->setName);
+        $this->connection()->del($keys);
     }
 }
