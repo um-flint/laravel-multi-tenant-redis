@@ -24,7 +24,9 @@ UMFlint\Cache\MultiTenantRedisServiceProvider::class,
 ```php
 ...
 'stores' => [
-        'redis'              => [
+        ...
+        
+        'multi-tenant-redis' => [
             'driver'     => 'multi-tenant-redis',
             'connection' => 'default',
         ],

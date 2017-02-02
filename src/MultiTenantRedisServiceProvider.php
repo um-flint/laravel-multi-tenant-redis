@@ -17,7 +17,7 @@ class MultiTenantRedisServiceProvider extends ServiceProvider
             $redis = $app['redis'];
             $config = $app['config'];
 
-            $connection = Arr::get($config['stores']['redis'], 'connection', 'default');
+            $connection = Arr::get($config['stores']['multi-tenant-redis'], 'connection', 'default');
 
             return Cache::repository(new RedisStore($redis, $config['cache']['prefix'], $connection));
         });
