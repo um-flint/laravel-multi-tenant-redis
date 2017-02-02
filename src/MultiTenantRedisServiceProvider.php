@@ -2,11 +2,27 @@
 
 namespace UMFlint\Cache;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\ServiceProvider;
 use UMFlint\Cache\RedisStore\RedisStore;
 
 class MultiTenantRedisServiceProvider extends ServiceProvider
 {
+    /**
+     * Perform post-registration booting of services.
+     */
+    public function boot()
+    {
+        Cache::extend('multi-tenant-redis', function ($app) {
+            $redis = $app['redis'];
+            $config = $app['config'];
+
+            $connection = Arr::get($config['stores']['redis'], 'connection', 'default');
+
+            return Cache::repository(new RedisStore($redis, $config['cache']['prefix'], $connection));
+        });
+    }
+
     /**
      * Register the service provider.
      *
@@ -14,14 +30,6 @@ class MultiTenantRedisServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $cache = $this->app['cache'];
-        $redis = $this->app['redis'];
-        $config = $this->app['config'];
-
-        $cache->extend('multi-tenant-redis', function ($app) use ($cache, $redis, $config) {
-            $connection = Arr::get($config['stores']['redis'], 'connection', 'default');
-
-            return $cache->repository(new RedisStore($redis, $config['cache']['prefix'], $connection));
-        });
+        //
     }
 }
