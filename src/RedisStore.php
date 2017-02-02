@@ -19,7 +19,7 @@ class RedisStore extends RedisStoreBase
      * @author Donald Wilcox <dowilcox@umflint.edu>
      * @param $key
      */
-    public function addKey($key)
+    protected function addKey($key)
     {
         $this->connection()->command('SADD', [
             $this->prefix . $this->setName,
@@ -33,7 +33,7 @@ class RedisStore extends RedisStoreBase
      * @author Donald Wilcox <dowilcox@umflint.edu>
      * @param $key
      */
-    public function removeKey($key)
+    protected function removeKey($key)
     {
         $this->connection()->command('SREM', [
             $this->prefix . $this->setName,
